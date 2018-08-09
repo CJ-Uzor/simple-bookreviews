@@ -11,7 +11,8 @@
           </a>
       </div>
       {% endfor %}
-  </div>
+      
+  </div> 
 
   <!-- Sidebar Widgets Column -->
   <div class="col-md-4">
@@ -19,18 +20,26 @@
     <div class="panel panel-default">
       <div class="panel-heading"><b>Categories</b></div>
       <div class="panel-body">
-        <li class="list-group-item list-group-item-light">
-            <a href="{{ url_for('main.index') }}">All</a>
-        </li>
-        {% for category in categories %}
-        <li class="list-group-item list-group-item-light">
-            <a href="{{ url_for('main.index', cat=category) }}">{{ category.title() }}</a>
-        </li>
-        {% endfor %}
+        <ul class="list-group">
+          <li class="list-group-item">
+              <a href="{{ url_for('main.index') }}">All</a>
+          </li>
+          {% for category in categories %}
+          <li class="list-group-item">
+              <a href="{{ url_for('main.index', cat=category) }}">{{ category.title() }}</a>
+          </li>
+          {% endfor %}
+        </ul>
       </div>
     </div>
 
   </div>
-
+  
+  <hr>
+  <div class="text-center row col-md-8">
+    <!--{{ pagination.info }}-->
+    {{ pagination.links }} 
+  </div>
 </div>
+
 {% endblock %}

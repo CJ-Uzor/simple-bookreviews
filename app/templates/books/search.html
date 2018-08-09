@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block app_content %} 
+    <div class="col-md-9 col-md-offset-1">
+        <div class = "row ">
+    
+            <p class='text-muted' style="padding-left:20px;">Search result:</p><hr>
+            {% include 'books/_books.html' %}
+        </div>
+    </div>
+{% endblock %}

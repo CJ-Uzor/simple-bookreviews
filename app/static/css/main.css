@@ -2,12 +2,6 @@ body{
     border: none;
 }
 
-.bfooter{
-    padding-top: 80px;
-    padding-bottom: 40px;
-    margin-top: 10px;
-}
-
 .pagination-page-info {
     padding: .6em;
     padding-left: 0;
@@ -26,9 +20,12 @@ body{
 }
 
 .thumbnail img {
-    height:260px;
+    height:240px;
     width:100%;
 }
 
+.footer{
+    background: white;
+}
 
   

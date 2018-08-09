@@ -1,0 +1,10 @@
+{% for book in books %}
+<div class="col-sm-6 col-md-3">
+    <a href="{{ url_for('books.book', id=book.id) }}" class="thumbnail" >
+        <img src="{{ url_for('static', filename='book_pics/' + book.image) }}" alt="" >
+        <!-- <div class="caption text-muted">
+            <p><b>{{book.title.title()}}</b></p>
+        </div> -->
+    </a>
+</div>
+{% endfor %}

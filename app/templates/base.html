@@ -1,7 +1,7 @@
 
 {% extends "bootstrap/base.html" %}
 {% block title %}
-    {{ title }}
+    {{ title }} | Simple-bookreviews
 {% endblock %}
 {% block styles %}
     {{ super() }}
@@ -25,6 +25,14 @@
                 <li><a href="{{ url_for('main.index') }}" >Home</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <form class="navbar-form navbar-left" method='POST' action="{{ url_for('books.search') }}">
+                        <div class="form-group">
+                            <input class="form-control mr-sm-2" placeholder="Search" aria-label="Search" type="text" name="search">
+                            <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
+                        </div>
+                    </form>
+                </li>
                 {% if current_user.is_authenticated %}
                     <li><a href="{{ url_for('books.new_book') }}" >Add a book</a></li>
                     <li><a href="{{ url_for('auth.logout') }}" >Logout</a></li>
@@ -39,15 +47,15 @@
 
 {% block content %}
 <div class="container">
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-info" role="alert">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            {{ message }}
-        </div>
-        {% endfor %}
-    {% endif %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} text-center">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
     {% endwith %}
 
     <div class="row">
@@ -55,43 +63,53 @@
         {% block app_content %}{% endblock %}
     </div>
 
-    
-    {% block scripts %}
-        {{ super() }}
-        {{ moment.include_moment() }}
-        <script src="{{url_for('static', filename='main.js')}}"></script>
-        <script src="{{url_for('static', filename='js/raty/lib/jquery.raty.js')}}"></script>
-        <script type="text/javascript">
-            $(function() {
-                $('#star').raty({
-                    path: '/static/js/raty/lib/images',
-                    half  : true,
-                    number: 5,
-                    score : $('#result').val(),
-                    starType:    'img',
-                    targetKeep   : true,
-                    click: function(score, event){
-                        $('#result').val(score);
-                    }
-                });
-
-                $('.avg-rating').raty({
-                    path: '/static/js/raty/lib/images',
-                    readOnly: true,
-                    score: function(){
-                        return $(this).attr('data-score');
-                    }
-                });
-
-                $('.star-rating').raty({
-                    path: '/static/js/raty/lib/images',
-                    readOnly: true,
-                    score: function(){
-                        return $(this).attr('data-score');
-                    }
-                });
-            });
-        </script>
-    {% endblock %}
+    <footer class="footer navbar-fixed-bottom">
+        <div class="container">
+            <hr>
+            <p class="text-muted text-center">
+                &copy; <script>document.write(
+                    new Date().getFullYear())
+                </script>, Simple-bookreviews 
+            </p>
+        </div>
+    </footer>
 </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    {{ moment.include_moment() }}
+    <script src="{{url_for('static', filename='main.js')}}"></script>
+    <script src="{{url_for('static', filename='js/raty/lib/jquery.raty.js')}}"></script>
+    <script type="text/javascript">
+        $(function() {
+            $('#star').raty({
+                path: '/static/js/raty/lib/images',
+                half  : true,
+                number: 5,
+                score : $('#result').val(),
+                starType:    'img',
+                targetKeep   : true,
+                click: function(score, event){
+                    $('#result').val(score);
+                }
+            });
+
+            $('.avg-rating').raty({
+                path: '/static/js/raty/lib/images',
+                readOnly: true,
+                score: function(){
+                    return $(this).attr('data-score');
+                }
+            });
+
+            $('.star-rating').raty({
+                path: '/static/js/raty/lib/images',
+                readOnly: true,
+                score: function(){
+                    return $(this).attr('data-score');
+                }
+            });
+        });
+    </script>
 {% endblock %}

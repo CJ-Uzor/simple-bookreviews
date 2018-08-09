@@ -11,6 +11,9 @@
       
         {{ wtf.form_field(form.username) }}
         {{ wtf.form_field(form.password) }}
+        <div class="text-right">
+          <a href="{{ url_for('auth.reset_password_request') }}" >Forgot password?</a>
+        </div>
         {{ wtf.form_field(form.remember_me) }} <br>
         {{ wtf.form_field(form.submit, class="btn btn-info btn-block") }}
       </form>

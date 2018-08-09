@@ -32,4 +32,4 @@ def index(cat=None):
         )
 
     return render_template('index.html', books=books_for_render,
-    pagination=pagination, categories=categories)
+    pagination=pagination, categories=categories, title='Home')
