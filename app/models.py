@@ -16,6 +16,9 @@ class User(db.Model, TimestampMixin, UserMixin):
     password_hash = db.Column(db.String(128))
     first_name = db.Column(db.String(20), nullable=False)
     last_name = db.Column(db.String(20), nullable=False)
+    admin = db.Column(db.Integer, default=0)
+    reviews = db.relationship('Review', backref='user', lazy='dynamic')
+    books = db.relationship('Book', backref='user', lazy='dynamic')
 
     def __repr__(self):
         return f'<User {self.username}>'
@@ -48,6 +51,7 @@ class Book(TimestampMixin, db.Model):
     copies = db.Column(db.Integer, default=1)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
     reviews = db.relationship('Review', backref='book', lazy='dynamic')
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
         return f'<Book {self.title}>'
@@ -60,6 +64,7 @@ class Review(TimestampMixin, db.Model):
     rating = db.Column(db.Float, default=0.0)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
+
 
 @login.user_loader
 def load_user(id):

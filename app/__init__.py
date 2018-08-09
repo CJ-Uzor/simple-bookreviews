@@ -4,21 +4,25 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from config import Config
 from flask_bootstrap import Bootstrap
+from flask_moment import Moment
 
 db = SQLAlchemy()
 migrate = Migrate()
 login = LoginManager()
 bootstrap = Bootstrap()
+moment = Moment()
+
+app = Flask(__name__)
+bootstrap.init_app(app)
 
 def create_app(config_class = Config):
-
-    app = Flask(__name__)
+    
     app.config.from_object(Config)
 
     db.init_app(app)
     login.init_app(app)
     migrate.init_app(app, db)
-    bootstrap.init_app(app)
+    moment.init_app(app)
 
     from app.auth.routes import auth
     from app.main.routes import main

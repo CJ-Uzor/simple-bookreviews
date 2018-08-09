@@ -5,7 +5,7 @@ app = create_app()
 # list all routes, similar to ruby on rails 'rake routes'
 @app.cli.command()
 def routes():
-    'Display registered routes'
+    #Display registered routes
     rules = []
     for rule in app.url_map.iter_rules():
         methods = ','.join(sorted(rule.methods))

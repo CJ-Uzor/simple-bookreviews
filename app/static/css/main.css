@@ -1,8 +1,34 @@
-
-*, .btn {
-    -webkit-border-radius: 0 !important;
-    -moz-border-radius: 0 !important;
-    border-radius: 0 !important;
+body{
+    border: none;
 }
+
+.bfooter{
+    padding-top: 80px;
+    padding-bottom: 40px;
+    margin-top: 10px;
+}
+
+.pagination-page-info {
+    padding: .6em;
+    padding-left: 0;
+    width: 40em;
+    margin: .5em;
+    margin-left: 0;
+    font-size: 12px;
+}
+
+.pagination-page-info b {
+    color: black;
+    background: #6aa6ed;
+    padding-left: 2px;
+    padding: .1em .25em;
+    font-size: 150%;
+}
+
+.thumbnail img {
+    height:260px;
+    width:100%;
+}
+
 
   

@@ -1,15 +1,36 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-  <!-- Jumbotron Header -->
-  <div class="jumbotron my-4">
-    <h2 class="display-3">This is a Simple-Bookshop web Application!</h2>
-    <hr>
-    <p class="lead">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-      Ipsa, ipsam, eligendi, in quo sunt possimus non incidunt odit vero aliquid 
-      similique quaerat nam nobis illo aspernatur vitae fugiat numquam repellat.
-    </p>
-    
+<div class="row">
+  <!-- Blog Entries Column -->
+  <div class="col-md-8">
+      {% for book in books %}
+      <div class="col-sm-6 col-md-3">
+          <a href="{{ url_for('books.book', id=book.id) }}" class="thumbnail">
+            <img src="{{ url_for('static', filename='book_pics/' + book.image) }}" alt="" class="cus-img">
+          </a>
+      </div>
+      {% endfor %}
   </div>
+
+  <!-- Sidebar Widgets Column -->
+  <div class="col-md-4">
+    <!-- Search Widget -->
+    <div class="panel panel-default">
+      <div class="panel-heading"><b>Categories</b></div>
+      <div class="panel-body">
+        <li class="list-group-item list-group-item-light">
+            <a href="{{ url_for('main.index') }}">All</a>
+        </li>
+        {% for category in categories %}
+        <li class="list-group-item list-group-item-light">
+            <a href="{{ url_for('main.index', cat=category) }}">{{ category.title() }}</a>
+        </li>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+
+</div>
 {% endblock %}

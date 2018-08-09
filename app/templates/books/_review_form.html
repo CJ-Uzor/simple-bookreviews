@@ -1,0 +1,7 @@
+<div id="star"></div> 
+<form method="POST" action="">
+    {{ form.hidden_tag() }} 
+    {{ wtf.form_field(form.rating, id ='result', type="hidden") }}     
+    {{ wtf.form_field(form.text, rows="8") }}
+    {{ wtf.form_field(form.submit, button_map={'submit':'success'}) }}
+</form>

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <div class="col-sm-6 col-md-3">
+        <div class="row">
+            <img src="{{ url_for('static', filename='book_pics/' + book.image) }}" alt="" class="thumbnail">
+            {% if current_user.is_authenticated and current_user.role %}
+                <a href="{{ url_for('edit_book', id=book.id) }}" class="btn btn-primary">Edit</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="content-section">
+            <h3>{{ book.title.title() }}</h3>
+            <p>By {{ book.author.title() }} (author) </p>
+            <h5><b>£{{book.price}}</b></h5>
+            
+            <hr>
+            <h4>Synopsis</h4>
+            <p class="text-justify">{{ book.summary }}</p>
+            <hr>
+            <div>
+                <h4>Reviews</h4>
+                {% if average %}
+                    <b>Average rating: <span class="avg-rating" data-score="{{ average }}" > </span> ({{average }})</b>
+                {% endif %}
+            </div><br>
+            {% if book.reviews and book.reviews.count() > 0 %}
+                {% for review in book.reviews.all() %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <span class="glyphicon glyphicon-user" aria-hidden="true" style="padding-right:5px;"></span>
+                            <span>{{ review.user.username.upper() }}</span><br>
+                            <span class="star-rating" data-score="{{ review.rating }}"></span><br>
+                            <span class="text-right">Created {{ moment(review.created_at).fromNow() }}</span>
+                            {% if review.updated %}
+                                <br><span class="text-right">Updated {{ moment(review.updated_at).fromNow()}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="panel-body">
+                            <p class="text-justify">{{ review.text }}</p>
+                            <hr>
+                            {% if current_user.username == review.user.username %}
+                            <a href="{{ url_for('books.edit_review', id=review.book_id) }}" class="btn btn-primary btn-sm">Edit </a>
+                            <!-- <a href="#" class="btn btn-danger btn-sm">Delete </a> -->
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal">
+                                Delete
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3 class="modal-title" id="deleteModalLabel">Deleting review</h3>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h4>Are you sure?</h4>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                                        <a href="{{ url_for('books.delete_review', id1=book.id, id2=review.id) }}" class="btn btn-danger">Yes</a>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}    
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <br>
+            {% if current_user.is_authenticated %}
+                {% include 'books/_review_form.html' %}
+            {% endif %}
+        </div>
+    </div>
+    <br><br>
+    <hr>
+    
+{% endblock %}
