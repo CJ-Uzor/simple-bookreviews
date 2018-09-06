@@ -35,3 +35,12 @@ class ReviewForm(FlaskForm):
     rating = DecimalField(default=0.0, validators=[NumberRange(min=0, max=5)])
     text = TextAreaField('Write a review')
     submit = SubmitField('Submit')
+
+class CategoryForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired(),Length(min=2, max=22)])
+    submit = SubmitField('Submit')
+
+class EditCategoryForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired(),Length(min=2, max=22)])
+    update = SubmitField('Update')
+    cancel = SubmitField('Cancel')

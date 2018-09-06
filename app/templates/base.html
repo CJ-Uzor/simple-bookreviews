@@ -35,7 +35,14 @@
                 </li>
                 {% if current_user.is_authenticated %}
                     <li><a href="{{ url_for('books.new_book') }}" >Add a book</a></li>
-                    <li><a href="{{ url_for('auth.logout') }}" >Logout</a></li>
+                    <li><a href="{{ url_for('books.category') }}">Category</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"> </span> {{ current_user.username }}
+                        <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('auth.logout') }}" >Logout</a></li>
+                        </ul>
+                    </li>
                 {% else %}
                     <li><a href="{{ url_for('auth.login') }}" >Login</a></li>
                 {% endif %}

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
-from app.books.forms import AddBookForm, EditBookForm, ReviewForm
+from app.books.forms import AddBookForm, EditBookForm, ReviewForm, CategoryForm, EditCategoryForm
 from app.models import Book, Category, Review
 from app.funcs import save_picture
 from app import db
@@ -146,3 +146,46 @@ def search():
         title='Search result', books=books, 
         search_msg=search_msg, color=color
     )
+
+@books.route('/category', methods=['GET', 'POST'])
+def category():
+    form = CategoryForm()
+    categories = Category.query.order_by(Category.name.asc())
+    if form.validate_on_submit():
+        cat = Category(name = form.name.data)
+
+        db.session.add(cat)
+        db.session.commit()
+        flash(f'{form.name.data} was added successfully', 'success')
+        return redirect(url_for('books.category'))
+
+    return render_template(
+        'books/categories.html', 
+        title='Categories', 
+        categories=categories,
+        form=form
+    )
+
+@books.route('/edit_category/<id>', methods=['GET', 'POST'])
+def edit_category(id):
+    category = Category.query.get(id)
+    form = EditCategoryForm(obj=category)
+    form.populate_obj(category)
+    if request.method == 'POST':
+       if form.update.data and form.validate_on_submit():
+           category.name = form.name.data 
+           db.session.commit()
+           flash ('Update was successful', 'success')
+           return redirect(url_for('books.category'))
+    if form.cancel.data:
+        return redirect(url_for('books.category'))
+    return render_template('books/edit_category.html', title='Edit Category', form=form)
+
+@books.route('/delete_category/<id>', methods=['GET', 'POST'])
+@login_required
+def delete_category(id):
+    if Category.query.filter_by(id=id).delete():
+        db.session.commit()
+        flash ('Category has been deleted', 'success')
+        return redirect(url_for('books.category'))
+    return redirect(url_for('books.category'))
