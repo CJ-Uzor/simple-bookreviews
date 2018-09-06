@@ -2,15 +2,37 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-<div class="book-page">
+<div class="container">
     <div class="col-sm-6 col-md-3">
         <div class="row">
             <img src="{{ url_for('static', filename='book_pics/' + book.image) }}" alt="" class="thumbnail">
             {% if current_user.is_authenticated and current_user.admin %}
-                <a href="{{ url_for('books.edit_book', id=book.id) }}" class="btn btn-primary">Edit</a>
+                <a href="{{ url_for('books.edit_book', id=book.id) }}" class="btn btn-primary" >Edit</a>
+                <!-- Button trigger modal -->
+                <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#deleteBook">Delete</a>
             {% endif %}
+            <a href="{{ url_for('main.index') }}" class="btn btn-default">Return to all books</a>
         </div>
     </div>
+
+    <!-- Delete Book Modal-->
+    <div class="modal fade" id="deleteBook" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="deleteModalLabel">Deleting Book: {{ book.title }}</h3>
+            </div>
+            <div class="modal-body">
+                <h4>Are you sure?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <a href="{{ url_for('books.delete_book', id=book.id) }}" class="btn btn-danger">Yes</a>
+            </div>
+            </div>
+        </div>
+    </div>
+
     <div class="col-md-9">
         <div class="content-section">
             <h3>{{ book.title.title() }}</h3>
@@ -61,7 +83,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                                        <a href="{{ url_for('books.delete_review', id1=book.id, id2=review.id) }}" class="btn btn-danger">Yes</a>
+                                        <a href="{{ url_for('books.delete_review', id1=book.id, id2=review.id) }}" class="btn btn-success">Yes</a>
                                     </div>
                                     </div>
                                 </div>
@@ -81,5 +103,5 @@
     </div>
     <br><br>
     <hr>
-</div>    
+</div><br>    
 {% endblock %}

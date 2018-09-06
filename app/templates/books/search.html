@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 
 {% block app_content %} 
+<div class="container">
     <div class="col-md-9 col-md-offset-1">
         <div class = "row ">
     
-            <p class='text-muted' style="padding-left:20px;">Search result:</p><hr>
+            <h3 class='text-muted' style="padding-left:20px;">Search result: <span class="text-{{color}}">{{ search_msg }}</span></h3><hr>
             {% include 'books/_books.html' %}
         </div>
     </div>
+</div>
 {% endblock %}

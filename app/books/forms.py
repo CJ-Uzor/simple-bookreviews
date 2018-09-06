@@ -1,3 +1,4 @@
+
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, BooleanField, SubmitField 
@@ -5,9 +6,9 @@ from wtforms import TextAreaField, FileField, DecimalField, IntegerField, Select
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length, NumberRange
 
 class AddBookForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    author = StringField('Author', validators=[DataRequired()])
-    summary = TextAreaField('Summary', validators=[DataRequired()])
+    title = StringField('Title', validators=[DataRequired(),Length(min=4, max=100)])
+    author = StringField('Author', validators=[DataRequired(), Length(min=4, max=30)])
+    summary = TextAreaField('Summary', validators=[DataRequired(), Length(min=100, max=5000)])
     image = FileField('Add image', validators=[FileAllowed(['jpg', 'png'])])
     price = DecimalField('Price', default=1.99)
     copies = IntegerField('Copies', default=1)
@@ -15,9 +16,9 @@ class AddBookForm(FlaskForm):
     submit = SubmitField('Add book')
 
 class EditBookForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    author = StringField('Author', validators=[DataRequired()])
-    summary = TextAreaField('Summary', validators=[DataRequired()])
+    title = StringField('Title', validators=[DataRequired(),Length(min=4, max=100)])
+    author = StringField('Author', validators=[DataRequired(), Length(min=4, max=30)])
+    summary = TextAreaField('Summary', validators=[DataRequired(), Length(min=100, max=5000)])
     image = FileField(
         'Update book image - <span style="color:red;">only replace if old or incorrect</span>', 
         validators=[

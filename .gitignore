@@ -37,6 +37,6 @@ nosetests.xml
 .pydevproject
 
 venv
-app.db
-microblog.log*
+# app.db
+simple_bookreviews.log*
 .vscode

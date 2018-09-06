@@ -79,10 +79,10 @@
 {% block scripts %}
     {{ super() }}
     {{ moment.include_moment() }}
-    <script src="{{url_for('static', filename='main.js')}}"></script>
-    <script src="{{url_for('static', filename='js/raty/lib/jquery.raty.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/raty/lib/jquery.raty.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script type="text/javascript">
-        $(function() {
+        $(document).ready(function() {
             $('#star').raty({
                 path: '/static/js/raty/lib/images',
                 half  : true,
@@ -94,7 +94,7 @@
                     $('#result').val(score);
                 }
             });
-
+        
             $('.avg-rating').raty({
                 path: '/static/js/raty/lib/images',
                 readOnly: true,
@@ -102,7 +102,7 @@
                     return $(this).attr('data-score');
                 }
             });
-
+        
             $('.star-rating').raty({
                 path: '/static/js/raty/lib/images',
                 readOnly: true,
@@ -110,6 +110,8 @@
                     return $(this).attr('data-score');
                 }
             });
+        
+            $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
 {% endblock %}

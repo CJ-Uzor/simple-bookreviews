@@ -21,6 +21,7 @@ def new_book():
         image_file = 'default.jpg'
         if form.image.data:
             image_file = save_picture(form.image.data)
+  
         book = Book(
             title=form.title.data,
             author=form.author.data,
@@ -31,9 +32,11 @@ def new_book():
             category_id=form.category_id.data
         )
         db.session.add(book)
+        db.session.flush()
+        new_id = book.id
         db.session.commit()
         flash('Book was added successfully', 'success')
-        return redirect(url_for('main.index'))
+        return redirect(url_for('books.book', id=new_id))
     return render_template('books/new_book.html', title='Add book', form=form)
 
 @books.route('/book/<id>', methods=['GET', 'POST'])
@@ -89,6 +92,15 @@ def edit_book(id):
             return redirect(url_for('books.book', id=id))
     return render_template('books/edit_book.html', title='Edit book', form=form)
 
+@books.route('/book/<id>/delete', methods=['GET', 'POST'])
+@login_required
+def delete_book(id):
+    if Book.query.filter_by(id=id).delete():
+        db.session.commit()
+        flash ('Book has been deleted', 'success')
+        return redirect(url_for('main.index'))
+    return redirect(url_for('books.book', id=id))  
+
 @books.route('/book/<id>/edit_review', methods=['GET', 'POST'])
 @login_required
 def edit_review(id):
@@ -116,10 +128,21 @@ def delete_review(id1, id2):
 def search():
     books = None
     target_string = request.form['search']
+
     books = Book.query.filter(
         or_(
             Book.title.contains(target_string),
             Book.author.contains(target_string)
             )
         ).all()
-    return render_template('books/search.html', title='Search result', books=books)
+
+    if target_string == '':
+        search_msg = 'No record(s) found - displaying all records'
+        color = 'danger'
+    else:
+        search_msg = f'{len(books)} book(s) found'
+        color = 'success'
+    return render_template('books/search.html', 
+        title='Search result', books=books, 
+        search_msg=search_msg, color=color
+    )
