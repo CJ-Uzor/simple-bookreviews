@@ -1,0 +1,7 @@
+# List of updates to be done
+
+- review and update codebase
+- update python version
+- add comprehensive tests
+- update sqlalchemy to version 2
+- make and add api version
